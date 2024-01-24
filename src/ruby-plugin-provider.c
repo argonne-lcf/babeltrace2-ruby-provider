@@ -705,15 +705,22 @@ static bt_plugin_provider_create_all_from_file_func_status
 plugin_ruby_create_all_from_file(
 		bt_self_plugin_provider *self_plugin_provider,
 		const char *path,
-		bt_bool fail_on_load_error, const struct bt_plugin_set **plugin_set_out)
+		const bt_plugin_provider_create_all_from_file_options *options,
+		const struct bt_plugin_set **plugin_set_out)
 {
 	struct plugin_provider_ruby_data *data = NULL;
 	gchar *basename = NULL;
 	size_t path_len;
 	int status = BT_PLUGIN_PROVIDER_CREATE_ALL_FROM_FILE_FUNC_STATUS_OK;
+	bt_bool fail_on_load_error = BT_FALSE;
 
 	BT_ASSERT(self_plugin_provider);
 	BT_ASSERT(path);
+	BT_ASSERT(options);
+
+	fail_on_load_error =
+		bt_plugin_provider_create_all_from_file_options_get_fail_on_load_error(
+			options);
 
 	data = bt_self_plugin_provider_get_data(self_plugin_provider);
 
